@@ -53,4 +53,18 @@ class TaskController extends Controller
             return response()->json(['message'=>"Invalid Task ID",'status'=>0]);
         }
     }
+    public function getdata(Request $request){
+        $validator=Validator::make($request->all(),[
+            'user_id'=>'required'
+        ]);
+        if($validator->fails()){
+            return response($validator->errors());
+        }
+        if(User::where('id',$request->user_id)->exists()){
+            $task=Task::where('user_id',$request->user_id)->get();
+            return response()->json(['task'=>$task,'status'=>1]);
+        }else{
+            return response()->json(['message'=>"Invalid User",'status'=>0]);
+        }
+    }
 }

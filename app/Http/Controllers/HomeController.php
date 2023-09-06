@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $tasks=Task::where('user_id',Auth::user()->id)->get();
+        // dd($tasks);
+        return view('home',['tasks'=>$tasks]);
     }
     public function custom_register(Request $request){
         $validator=Validator::make($request->all(),[
